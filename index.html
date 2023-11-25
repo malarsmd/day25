@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <title>Todo App</title>
+</head>
+<body>
+    <div id="app">
+        <!-- Todo Form -->
+        <form id="todo-form">
+            <input type="text" id="task-name" placeholder="Task Name" required>
+            <textarea id="task-description" placeholder="Description"></textarea>
+            <button type="button" onclick="addTodo()">Add Todo</button>
+        </form>
+
+        <!-- Todo List -->
+        <div id="todo-list"></div>
+    </div>
+</body>
+</html>
+let todos = [];
+
+function addTodo() {
+    // Get values from form
+    const taskName = document.getElementById('task-name').value;
+    const taskDescription = document.getElementById('task-description').value;
+
+    // Create a new todo object
+    const newTodo = {
+        id: Date.now(),
+        name: taskName,
+        description: taskDescription,
+        status: 'Not Completed',
+    };
+
+    // Add todo to the array
+    todos.push(newTodo);
+
+    // Clear form fields
+    document.getElementById('task-name').value = '';
+    document.getElementById('task-description').value = '';
+
+    // Render todos
+    renderTodos();
+}
+
+function renderTodos() {
+    const todoList = document.getElementById('todo-list');
+    todoList.innerHTML = ''; // Clear previous content
+
+    todos.forEach(todo => {
+        // Create a card for each todo
+        const card = document.createElement('div');
+        card.classList.add('todo-card');
+
+        // Display todo details
+        card.innerHTML = `
+            <h3>${todo.name}</h3>
+            <p>${todo.description}</p>
+            <p>Status: ${todo.status}</p>
+            <button onclick="editTodo(${todo.id})">Edit</button>
+            <button onclick="deleteTodo(${todo.id})">Delete</button>
+        `;
+
+        // Add the card to the list
+        todoList.appendChild(card);
+    });
+}
+
+function editTodo(todoId) {
+    // Implement edit functionality
+    // You may open a modal or update the form for editing
+}
+
+function deleteTodo(todoId) {
+    // Implement delete functionality
+    // Remove the todo with the given id from the todos array
+    todos = todos.filter(todo => todo.id !== todoId);
+
+    // Render todos
+    renderTodos();
+}
